@@ -315,6 +315,9 @@
 
         <div class="subtitle" style="margin-top: 8px;">Emm có muốn đi xem phim hôngggg?:</div>
         <div id="place-list" class="chips"></div>
+
+        <div class="subtitle" style="margin-top: 8px;">Chọn khung giờ:</div>
+        <div id="time-list" class="chips"></div>
       </div>
 
       <button class="btn-main" id="btn-confirm">Xác nhận buổi hẹn 💌</button>
@@ -339,6 +342,7 @@
     const foods = ["Gà rán", "Mì cay ít cay :>", "Đồ nướng"];
     const walks = ["Cammm chịuu", "Để Camm nghĩ lạii"];
     const places = ["Cammm chịuu", "Để Camm nghĩ lạii"];
+    const times = ["18:00", "19:00", "20:00"];
 
     // ===== DOM ELEMENTS =====
     const screen1 = document.getElementById("screen-1");
@@ -352,6 +356,7 @@
     const foodList = document.getElementById("food-list");
     const walkList = document.getElementById("walk-list");
     const placeList = document.getElementById("place-list");
+    const timeList = document.getElementById("time-list");
     const btnConfirm = document.getElementById("btn-confirm");
     const msgWarning = document.getElementById("msg-warning");
     const ticketContent = document.getElementById("ticket-content");
@@ -360,6 +365,7 @@
     let selectedFoods = [];
     let selectedWalks = [];
     let selectedPlace = null;
+    let selectedTime = null;
 
     // ===== MÀN 1: NÚT KHÔNG CHẠY TRỐN =====
     btnNo.addEventListener("mouseover", () => {
@@ -399,6 +405,7 @@
       renderChipGroup(foods, foodList, selectedFoods, 2);
       renderChipGroup(walks, walkList, selectedWalks, 1);
       renderPlaces();
+      renderTimes();
     }
 
     function renderChipGroup(items, container, selectedArray, maxSelected) {
@@ -441,24 +448,41 @@
       });
     }
 
+    function renderTimes() {
+      timeList.innerHTML = "";
+      times.forEach((time) => {
+        const chip = document.createElement("div");
+        chip.className = "chip" + (selectedTime === time ? " selected" : "");
+        chip.textContent = time;
+        chip.addEventListener("click", () => {
+          selectedTime = time;
+          renderTimes(); // re-render để update trạng thái selected
+        });
+        timeList.appendChild(chip);
+      });
+    }
+
     // ===== MÀN 2 → MÀN 3: XÁC NHẬN =====
     btnConfirm.addEventListener("click", () => {
       if (!selectedPlace) {
         msgWarning.textContent = "Mình chọn 1 bộ phim để xem nha 😳";
         return;
       }
+      if (!selectedTime) {
+        msgWarning.textContent = "Mình chọn 1 khung giờ nha 😳";
+        return;
+      }
 
       // Đổ nội dung vé hẹn hò
       const date = "24/12"; // t có thể cho người dùng chọn thêm
-      const time = "19:00";
 
       ticketContent.innerHTML = `
-        <strong>📅 Thời gian:</strong> ${date}, ${time}<br/>
+        <strong>📅 Thời gian:</strong> ${date}, ${selectedTime}<br/>
         <strong>🎬 Xem phim:</strong> ${selectedPlace}<br/>
         <strong>🍽️ Món ăn:</strong> ${selectedFoods.length ? selectedFoods.join(", ") : "Để anh chọn, em chỉ việc ăn 😌"}<br/>
         <strong>🚶‍♂️ Đi dạo:</strong> ${selectedWalks.length ? selectedWalks.join(", ") : "Để anh chọn, em chỉ việc đi cùng 😊"}<br/><br/>
         <strong>👤 Người mời:</strong> Anh (người đang bí mật làm web này 😏)<br/>
-        <strong>💖 Người được mời:</strong> Em (người đặc biệt nhất đêm Noel này)
+        <strong>💖 Người được mời:</strong> Em (người sẽ là ngoại lệ của anh :3)
       `;
 
       screen2.classList.add("hidden");
