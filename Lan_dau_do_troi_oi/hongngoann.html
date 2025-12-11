@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Đi chơi Noel với anh nha 🎄</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      color: #222;
+    }
+
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      width: min(480px, 100% - 32px);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    .btn-yes {
+      background: #ff4b5c;
+      color: white;
+      box-shadow: 0 4px 12px rgba(255, 75, 92, 0.6);
+      font-weight: 600;
+    }
+
+    .btn-no {
+      background: #e0e0e0;
+    }
+
+    .btn-main {
+      background: #ff4b5c;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin: 12px 0 4px;
+    }
+
+    .chip {
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid #ffd1d8;
+      cursor: pointer;
+      font-size: 13px;
+      background: #fff;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.1s;
+    }
+
+    .chip.selected {
+      background: #ff4b5c;
+      color: #fff;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+
+    .ticket {
+      border-radius: 12px;
+      border: 1px dashed #ff4b5c;
+      padding: 12px;
+      margin-top: 12px;
+      text-align: left;
+      font-size: 14px;
+      background: #fff5f7;
+    }
+
+    /* === SNOWFLAKES === */
+    .snowflakes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* === SANTA CLAUS CHARACTERS === */
+    .santa-claus {
+      position: fixed;
+      z-index: 999;
+      font-size: 24px;
+      animation: floatAround 20s linear infinite;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    @keyframes floatAround {
+      0% {
+        transform: translate(10vw, 10vh) rotate(0deg);
+      }
+      25% {
+        transform: translate(80vw, 30vh) rotate(90deg);
+      }
+      50% {
+        transform: translate(70vw, 80vh) rotate(180deg);
+      }
+      75% {
+        transform: translate(20vw, 60vh) rotate(270deg);
+      }
+      100% {
+        transform: translate(10vw, 10vh) rotate(360deg);
+      }
+    }
+
+    /* === MOBILE RESPONSIVE === */
+    @media (max-width: 768px) {
+      .card {
+        width: calc(100% - 32px);
+        padding: 20px 16px;
+        margin: 16px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      p {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+      }
+
+      .btn-yes, .btn-no, .btn-main {
+        font-size: 16px;
+      }
+
+      .subtitle {
+        font-size: 12px;
+      }
+
+      .chip {
+        font-size: 12px;
+        padding: 5px 10px;
+      }
+
+      .ticket {
+        font-size: 13px;
+        padding: 10px;
+      }
+
+      .santa-claus {
+        font-size: 18px;
+        animation-duration: 25s;
+      }
+
+      .snowflake {
+        transform-origin: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        width: calc(100% - 20px);
+        padding: 16px 12px;
+        margin: 10px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .actions {
+        gap: 10px;
+      }
+
+      .btn-yes, .btn-no, .btn-main {
+        padding: 14px;
+        font-weight: 600;
+      }
+
+      .santa-claus {
+        font-size: 16px;
+        opacity: 0.4;
+        animation-duration: 30s;
+      }
+
+      .snowflakes {
+        pointer-events: none;
+      }
+
+      .chips {
+        gap: 6px;
+      }
+
+      .chip {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- SNOWFLAKES CONTAINER -->
+  <div class="snowflakes" id="snowflakes"></div>
+
+  <!-- SANTA CLAUS CHARACTERS -->
+  <div class="santa-claus">🎅</div>
+  <div class="santa-claus">🤶</div>
+  <div class="santa-claus">🦌</div>
+
+  <div class="card">
+    <!-- MÀN 1: HỎI ĐI CHƠI KHÔNG -->
+    <div id="screen-1">
+      <h1>Noel này em đi chơi với anh nha? 🎄</h1>
+      <p>Đảm bảo ấm áp, vui vẻ, có đồ ăn ngon và người đi cùng siêu dễ thương (là anh 😌).</p>
+      <div class="actions">
+        <button class="btn-yes" id="btn-yes">Đồng ý luôn 🥺</button>
+        <button class="btn-no" id="btn-no">Không chịu đâu 🙄</button>
+      </div>
+      <p id="msg-tries" class="subtitle"></p>
+    </div>
+
+    <!-- MÀN 2: CHỌN COMBO -->
+    <div id="screen-2" class="hidden">
+      <h1>Yeee, em đồng ý rồi! 🥰</h1>
+      <p>Giờ mình chọn combo đi chơi Noel nha.</p>
+
+      <div style="margin-top: 8px;">
+        <div class="subtitle">Chọn món ăn:</div>
+        <div id="food-list" class="chips"></div>
+
+        <div class="subtitle" style="margin-top: 8px;">Emm có muốn đi dạo hôngggg?</div>
+        <div id="walk-list" class="chips"></div>
+
+        <div class="subtitle" style="margin-top: 8px;">Emm có muốn đi xem phim hôngggg?:</div>
+        <div id="place-list" class="chips"></div>
+      </div>
+
+      <button class="btn-main" id="btn-confirm">Xác nhận buổi hẹn 💌</button>
+      <p id="msg-warning" class="subtitle"></p>
+    </div>
+
+    <!-- MÀN 3: VÉ HẸN HÒ -->
+    <div id="screen-3" class="hidden">
+      <h1>Vé hẹn hò đêm Noel 🎫</h1>
+      <p>Cảm ơn em vì đã đồng ý đi chơi Noel với anh 💖</p>
+      <div class="ticket" id="ticket-content">
+        <!-- JS sẽ đổ nội dung vào đây -->
+      </div>
+      <p style="margin-top: 8px; font-size: 13px; opacity: 0.8;">
+        Gợi ý: em có thể chụp màn hình vé này gửi lại cho anh để xác nhận lịch nha 😚
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA GIẢ (t sau này thay bằng đồ ăn/thức uống/thánh địa Noel thật của t) =====
+    const foods = ["Gà rán", "Mì cay ít cay :>", "Đồ nướng"];
+    const walks = ["Cammm chịuu", "Để Camm nghĩ lạii"];
+    const places = ["Cammm chịuu", "Để Camm nghĩ lạii"];
+
+    // ===== DOM ELEMENTS =====
+    const screen1 = document.getElementById("screen-1");
+    const screen2 = document.getElementById("screen-2");
+    const screen3 = document.getElementById("screen-3");
+
+    const btnYes = document.getElementById("btn-yes");
+    const btnNo = document.getElementById("btn-no");
+    const msgTries = document.getElementById("msg-tries");
+
+    const foodList = document.getElementById("food-list");
+    const walkList = document.getElementById("walk-list");
+    const placeList = document.getElementById("place-list");
+    const btnConfirm = document.getElementById("btn-confirm");
+    const msgWarning = document.getElementById("msg-warning");
+    const ticketContent = document.getElementById("ticket-content");
+
+    let triesNo = 0;
+    let selectedFoods = [];
+    let selectedWalks = [];
+    let selectedPlace = null;
+
+    // ===== MÀN 1: NÚT KHÔNG CHẠY TRỐN =====
+    btnNo.addEventListener("mouseover", () => {
+      // Mỗi lần hover thì di chuyển nút "Không" ngẫu nhiên trong card
+      const cardRect = document.querySelector(".card").getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+
+      const maxX = cardRect.width - btnRect.width - 40;
+      const maxY = cardRect.height - btnRect.height - 80;
+
+      const randX = Math.random() * maxX - (maxX / 2);
+      const randY = Math.random() * maxY - (maxY / 3);
+
+      btnNo.style.position = "relative";
+      btnNo.style.left = randX + "px";
+      btnNo.style.top = randY + "px";
+
+      triesNo++;
+      if (triesNo === 1) {
+        msgTries.textContent = "Ấn nhầm rồi đó, thử ấn nút bên kia xem 🥹";
+      } else if (triesNo === 2) {
+        msgTries.textContent = "Hình như hệ thống không nhận lựa chọn này thì phải… 🤔";
+      } else if (triesNo >= 3) {
+        msgTries.textContent = "Thôi mà, Noel mà… cho anh 1 cơ hội nha 😭";
+      }
+    });
+
+    btnYes.addEventListener("click", () => {
+      // Chuyển từ màn 1 sang màn 2
+      screen1.classList.add("hidden");
+      screen2.classList.remove("hidden");
+      renderChips();
+    });
+
+    // ===== MÀN 2: RENDER CHIP LỰA CHỌN =====
+    function renderChips() {
+      renderChipGroup(foods, foodList, selectedFoods, 2);
+      renderChipGroup(walks, walkList, selectedWalks, 1);
+      renderPlaces();
+    }
+
+    function renderChipGroup(items, container, selectedArray, maxSelected) {
+      container.innerHTML = "";
+      items.forEach((item) => {
+        const chip = document.createElement("div");
+        chip.className = "chip" + (selectedArray.includes(item) ? " selected" : "");
+        chip.textContent = item;
+        chip.addEventListener("click", () => {
+          const index = selectedArray.indexOf(item);
+          if (index >= 0) {
+            // bỏ chọn
+            selectedArray.splice(index, 1);
+            chip.classList.remove("selected");
+          } else {
+            if (selectedArray.length >= maxSelected) {
+              msgWarning.textContent = `Mỗi loại chọn tối đa ${maxSelected} thôi nha 😝`;
+              setTimeout(() => (msgWarning.textContent = ""), 2000);
+              return;
+            }
+            selectedArray.push(item);
+            chip.classList.add("selected");
+          }
+        });
+        container.appendChild(chip);
+      });
+    }
+
+    function renderPlaces() {
+      placeList.innerHTML = "";
+      places.forEach((place) => {
+        const chip = document.createElement("div");
+        chip.className = "chip" + (selectedPlace === place ? " selected" : "");
+        chip.textContent = place;
+        chip.addEventListener("click", () => {
+          selectedPlace = place;
+          renderPlaces(); // re-render để update trạng thái selected
+        });
+        placeList.appendChild(chip);
+      });
+    }
+
+    // ===== MÀN 2 → MÀN 3: XÁC NHẬN =====
+    btnConfirm.addEventListener("click", () => {
+      if (!selectedPlace) {
+        msgWarning.textContent = "Mình chọn 1 bộ phim để xem nha 😳";
+        return;
+      }
+
+      // Đổ nội dung vé hẹn hò
+      const date = "24/12"; // t có thể cho người dùng chọn thêm
+      const time = "19:00";
+
+      ticketContent.innerHTML = `
+        <strong>📅 Thời gian:</strong> ${date}, ${time}<br/>
+        <strong>🎬 Xem phim:</strong> ${selectedPlace}<br/>
+        <strong>🍽️ Món ăn:</strong> ${selectedFoods.length ? selectedFoods.join(", ") : "Để anh chọn, em chỉ việc ăn 😌"}<br/>
+        <strong>🚶‍♂️ Đi dạo:</strong> ${selectedWalks.length ? selectedWalks.join(", ") : "Để anh chọn, em chỉ việc đi cùng 😊"}<br/><br/>
+        <strong>👤 Người mời:</strong> Anh (người đang bí mật làm web này 😏)<br/>
+        <strong>💖 Người được mời:</strong> Em (người đặc biệt nhất đêm Noel này)
+      `;
+
+      screen2.classList.add("hidden");
+      screen3.classList.remove("hidden");
+    });
+
+    // ===== SNOWFLAKES GENERATION =====
+    function createSnowflakes() {
+      const snowflakesContainer = document.getElementById('snowflakes');
+      const snowflakeCount = 50;
+
+      for (let i = 0; i < snowflakeCount; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+
+        // Random properties for each snowflake
+        const size = Math.random() * 5 + 2; // Size between 2px and 7px
+        const posX = Math.random() * 100; // Position X percentage
+        const delay = Math.random() * 5; // Animation delay
+        const duration = Math.random() * 10 + 10; // Animation duration (10-20 seconds)
+        const opacity = Math.random() * 0.5 + 0.3; // Opacity between 0.3 and 0.8
+
+        // Apply styles
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.left = `${posX}%`;
+        snowflake.style.animationDelay = `${delay}s`;
+        snowflake.style.animationDuration = `${duration}s`;
+        snowflake.style.opacity = opacity;
+
+        snowflakesContainer.appendChild(snowflake);
+      }
+    }
+
+    // Initialize snowflakes when page loads
+    window.addEventListener('load', createSnowflakes);
+  </script>
+</body>
+</html>
